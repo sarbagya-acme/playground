@@ -2,6 +2,7 @@
   "private": true,
   "name": "electron-app",
   "version": "0.0.2",
+  "author": "Sarbagya",
   "main": "lib/backend/electron-main.js",
   "dependencies": {
     "@theia/core": "1.63.3",
