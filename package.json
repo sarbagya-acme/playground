@@ -23,5 +23,6 @@
     "mango",
     "browser-app",
     "electron-app"
-  ]
+  ],
+  "version": "0.0.1"
 }
