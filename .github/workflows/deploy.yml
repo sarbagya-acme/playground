@@ -20,6 +20,8 @@ jobs:
   deploy:
     runs-on: windows-latest
     timeout-minutes: 20
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout code
@@ -58,3 +60,5 @@ jobs:
       - name: Push changes back to branch
         if: success()
         run: git push origin HEAD
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
