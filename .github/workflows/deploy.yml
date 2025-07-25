@@ -5,11 +5,21 @@ on:
     branches:
       - workflow
   workflow_dispatch:
+    inputs:
+      version_type:
+        description: Version Bum Type
+        required: true
+        default: patch
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
 
 jobs:
   deploy:
     runs-on: windows-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
 
     steps:
       - name: Checkout code
@@ -32,11 +42,25 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
+      - name: Install dependencies
+        run: npm install
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
+
+      - name: Version bump
+        run: npm version ${{ github.event.inputs.version_type || 'patch' }}
+
       - name: Build
         run: |
-          npm install
           npm run build
           npm run deploy
         env:
           NODE_OPTIONS: --max-old-space-size=4096
           GH_TOKEN: ${{ secrets.PAT }}
+
+      - name: Push changes back to branch
+        if: success()
+        run: |
+          git config --global user.name "Release Bot"
+          git config --global user.email "bot@acmesoftware.com"
+          git push origin HEAD
