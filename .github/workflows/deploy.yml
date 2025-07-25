@@ -48,6 +48,7 @@ jobs:
 
       - name: Version bump
         run: npm version ${{ github.event.inputs.version_type || 'patch' }}
+        working-directory: electron-app
 
       - name: Build
         run: |
