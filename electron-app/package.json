@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "electron-app",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "lib/backend/electron-main.js",
   "dependencies": {
     "@theia/core": "1.63.3",
@@ -20,15 +20,52 @@
   },
   "devDependencies": {
     "@theia/cli": "1.63.3",
-    "electron": "37.2.1"
+    "electron": "37.2.1",
+    "rimraf": "^6.0.1",
+    "electron-builder": "26.0.12"
   },
   "scripts": {
+    "clean:dist": "rimraf dist",
     "bundle": "npm run rebuild && theia build --mode development",
     "rebuild": "theia rebuild:electron --cacheRoot ..",
     "start": "theia start",
-    "watch": "npm run rebuild && theia build --watch --mode development"
+    "watch": "npm run rebuild && theia build --watch --mode development",
+    "build": "npm run rebuild && theia build --app-target=\"electron\"",
+    "package": "npm run clean:dist && npm run rebuild && electron-builder -c.mac.identity=null --publish never",
+    "deploy": "npm run clean:dist && npm run rebuild && electron-builder -c.mac.identity=null --publish always"
   },
   "theia": {
-    "target": "electron"
+    "target": "electron",
+    "frontend": {
+      "config": {
+        "applicationName": "Mango",
+        "reloadOnReconnect": true,
+        "preferences": {
+          "toolbar.showToolbar": true,
+          "security.workspace.trust.enabled": false
+        },
+        "electron": {
+          "showWindowEarly": false,
+          "splashScreenOptions": {
+            "content": "resources/TheiaIDESplash.svg",
+            "height": 276,
+            "width": 446
+          }
+        }
+      }
+    },
+    "backend": {
+      "config": {
+        "frontendConnectionTimeout": -1,
+        "startupTimeout": -1,
+        "resolveSystemPlugins": false,
+        "configurationFolder": ".mango"
+      }
+    },
+    "generator": {
+      "config": {
+        "preloadTemplate": "./resources/preload.html"
+      }
+    }
   }
 }

@@ -1,0 +1,76 @@
+appId: sarbagya.mango
+productName: Mango
+copyright: Copyright © Sarbagya
+electronDist: ../node_modules/electron/dist
+electronVersion: 37.2.1
+asar: false
+nodeGypRebuild: false
+npmRebuild: false
+
+directories:
+  buildResources: resources
+
+files:
+  - src-gen
+  - lib
+  - resources/icons/WindowIcon/512-512.png
+  - resources/TheiaIDESplash.svg
+  - "!**node_modules/**"
+
+win:
+  icon: resources/icons/WindowsLauncherIcon/TheiaIDE.ico
+  target:
+    - nsis
+  publish:
+    provider: github
+    owner: sarbagya-acme
+    repo: playground
+
+mac:
+  icon: resources/icons/MacLauncherIcon/512-512-2.icns
+  category: public.app-category.developer-tools
+  protocols:
+    - name: theia
+      schemes:
+        - theia
+  darkModeSupport: true
+  target:
+    - dmg
+    - zip
+  publish:
+    provider: github
+    owner: sarbagya-acme
+    repo: playground
+
+linux:
+  icon: resources/icons/LinuxLauncherIcons
+  category: Development
+  mimeTypes:
+    - inode/directory
+  vendor: Sarbagya
+  target:
+    - deb
+    - AppImage
+  publish:
+    provider: github
+    owner: sarbagya-acme
+    repo: playground
+
+nsis:
+  menuCategory: true
+  oneClick: false
+  perMachine: false
+  installerHeaderIcon: resources/icons/WindowsLauncherIcon/TheiaIDE.ico
+  installerIcon: resources/icons/WindowsLauncherIcon/TheiaIDE.ico
+  uninstallerIcon: resources/icons/WindowsLauncherIcon/TheiaIDE.ico
+  installerSidebar: resources/icons/InstallerSidebarImage/164-314Windows.bmp
+  uninstallerSidebar: resources/icons/InstallerSidebarImage/164-314Windows.bmp
+  allowToChangeInstallationDirectory: true
+  runAfterFinish: false
+  artifactName: ${productName}Setup.${ext}
+dmg:
+  artifactName: ${productName}.${ext}
+deb:
+  artifactName: ${productName}.${ext}
+appImage:
+  artifactName: ${productName}.${ext}
