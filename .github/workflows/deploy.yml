@@ -22,6 +22,15 @@ jobs:
         with:
           node-version: 22
           registry-url: "https://registry.npmjs.org"
+          cache: "npm"
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Build
         run: |
@@ -30,3 +39,4 @@ jobs:
           npm run deploy
         env:
           NODE_OPTIONS: --max-old-space-size=4096
+          GH_TOKEN: ${{ secrets.GITHUB_PAT }}
