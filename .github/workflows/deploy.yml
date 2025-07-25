@@ -34,18 +34,15 @@ jobs:
           registry-url: "https://registry.npmjs.org"
           cache: "npm"
 
-      - name: Cache node modules
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
       - name: Install dependencies
-        run: npm install
+        run: npm ci --silent
         env:
           NODE_OPTIONS: --max-old-space-size=4096
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "Release Bot"
+          git config --global user.email "bot@acmesoftware.com"
 
       - name: Version bump
         run: npm version ${{ github.event.inputs.version_type || 'patch' }}
@@ -60,7 +57,4 @@ jobs:
 
       - name: Push changes back to branch
         if: success()
-        run: |
-          git config --global user.name "Release Bot"
-          git config --global user.email "bot@acmesoftware.com"
-          git push origin HEAD
+        run: git push origin HEAD
