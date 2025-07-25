@@ -12,12 +12,16 @@
     "start:browser": "npm --prefix browser-app start",
     "start:electron": "npm --prefix electron-app start",
     "watch:browser": "lerna run --parallel watch --ignore electron-app",
-    "watch:electron": "lerna run --parallel watch --ignore browser-app"
+    "watch:electron": "lerna run --parallel watch --ignore browser-app",
+    "build": "npm --prefix electron-app run build",
+    "deploy": "npm --prefix electron-app run deploy"
   },
   "devDependencies": {
     "lerna": "2.4.0"
   },
   "workspaces": [
-    "mango", "browser-app", "electron-app"
+    "mango",
+    "browser-app",
+    "electron-app"
   ]
 }

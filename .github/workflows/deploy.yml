@@ -1,0 +1,32 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - workflow
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: windows-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Build
+        run: |
+          npm install
+          npm run build
+          npm run deploy
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
