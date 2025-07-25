@@ -47,7 +47,7 @@ jobs:
           git config --global user.email "bot@acmesoftware.com"
 
       - name: Version bump
-        run: npm version ${{ github.event.inputs.version_type || 'patch' }}
+        run: npm version ${{ github.event.inputs.version_type || 'patch' }} -m "Bump version to %s"
         working-directory: electron-app
 
       - name: Build
@@ -60,6 +60,6 @@ jobs:
 
       - name: Push changes back to branch
         if: success()
-        run: git push origin HEAD
+        run: git push origin HEAD --follow-tags
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
